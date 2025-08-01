@@ -80,12 +80,106 @@ local Tabs = {
 	Main = Frame:AddTab("Main"),
 	Currency = Frame:AddTab("Currency");
 	Helpful = Frame:AddTab("Utilities");
+	Teleport = Frame:AddTab("Teleport");
 };
-task.wait(1);
+wait(1);
+
+local teleport_left_group = Tabs.Teleport:AddLeftGroupbox("Section 1");
+local teleport_right_group = Tabs.Teleport:AddRightGroupbox("Section 2");
+
+local Try: number = 17;
+local teleport_to_location; teleport_to_location = @native function(Cframe: CFrame)
+	for i: number = 1, Try do
+		wait();
+		if not Player or not Player.Character or not Player.Character:FindFirstChild("Humanoid") then
+			continue;
+		end;
+		Player.Character:PivotTo(CFrame.new(538.700073, 34, -190.999969, 0, 1, 0, 0, 0, 1, 1, 0, 0));
+	end;
+
+	wait(0.2);
+	for i: number = 1, Try do
+		task.wait();
+		if not Player or not Player.Character or not Player.Character:FindFirstChild("Humanoid") then
+			continue;
+		end;
+		Player.Character:PivotTo(Cframe);
+	end;
+end;
+
+teleport_left_group:AddButton("Tower", @native function()
+	teleport_to_location(CFrame.new(548, 557, 848));
+	return;
+end);
+teleport_left_group:AddButton("CI Base", @native function()
+	teleport_to_location(CFrame.new(830, 500, 875));
+	return;
+end);
+teleport_left_group:AddButton("106 Chamber", @native function()
+	teleport_to_location(CFrame.new( 655.999939, -5.89998817, -374.19989, 1, 0, 0, 0, 1, 0, 0, 0, 1));
+	return;
+end);
+teleport_left_group:AddButton("Medical bay", @native function()
+	teleport_to_location(CFrame.new(830, 8.99999809, 182.000061, 1, 0, 0, 0, 1, 0, 0, 0, 1));
+	return;	
+end);
+teleport_left_group:AddButton("Cafe", @native function()
+	teleport_to_location(CFrame.new(583, 3.50000334, 210.000031, 1, 0, 0, 0, 1, 0, 0, 0, 1));
+	return;
+end);
+
+teleport_right_group:AddButton("SD bay", @native function()
+	teleport_to_location(CFrame.new(431.999969, 9.5, 82.0000458, 1, 0, 0, 0, 1, 0, 0, 0, 1 ));
+	return;
+end);
+
+--[[[
+main_left_group:AddDropdown("Items", {
+	Values = {"Locker Keychain", "P90s", "Glock 22", "Keycard Device", "Honey badger", "Kriss Vector", "Level 3", "M16", "P90", "Level 4" , "Level 5", "Kitchen Knife"};
+	Default = "";
+	Multi = false;
+	Text = "Buy items from dealer";
+	Tooltip = "Works even if your a on a foundation team";
+	Callback = @native function(name: string)
+		network:InvokeServer("PurchaseItem", name);
+		return;
+	end,	
+});
+]]
+
+local string_players = {};
+for i,v in Players:GetPlayers() do
+	string_players[i] = tostring(v);
+end;
+local thingy = teleport_right_group:AddDropdown("Players", {
+	Values = string_players;
+	Default = "";
+	Muti = false;
+	Text = "Teleport to player";
+	Callback = @native function(plr: string): ()
+		plr = Players:FindFirstChild(plr) :: Player;
+		if not plr.Character or not plr.Character:FindFirstChild("Head") then
+			return;
+		end;
+		teleport_to_location(plr.Character.Head.CFrame);
+	end,	
+});
+
+
 local helpful_left_group = Tabs.Helpful:AddLeftGroupbox("Moderation");
 local kick_activater: boolean = false;
 
+
+
 local anti_mod: boolean = false;
+local TeleportService: TeleportService = cloneref(game:GetService("TeleportService"));
+helpful_left_group:AddButton("Teleport to test place", @native function()
+	-- 4346713746
+	TeleportService:Teleport(4346713746, Player);
+	return;
+end);
+
+
 helpful_left_group:AddToggle("Kicker", {
 	Text = "Kick when moderator joins";
 	Default = false;
