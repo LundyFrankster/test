@@ -72,8 +72,8 @@ local decode_args;  decode_args = @native function(encoded: string, key: {number
 	return decoded;
 end;
 local Frame = Library:CreateWindow({
-	Title = "S19 Gui by WATDAHECKLOL32 (DrBloop)",
-	Center = false, 
+	Title = "S19 Gui by WATDAHECKLOL32 (DrBloop) and whiz.sk, lightstrikevex",
+	Center = true, 
 	AutoShow = true, 
 });
 local Tabs = {
@@ -84,8 +84,6 @@ local Tabs = {
 };
 wait(1);
 
-local teleport_left_group = Tabs.Teleport:AddLeftGroupbox("Section 1");
-local teleport_right_group = Tabs.Teleport:AddRightGroupbox("Section 2");
 
 local Try: number = 17;
 local teleport_to_location; teleport_to_location = @native function(Cframe: CFrame)
@@ -107,31 +105,52 @@ local teleport_to_location; teleport_to_location = @native function(Cframe: CFra
 	end;
 end;
 
-teleport_left_group:AddButton("Tower", @native function()
-	teleport_to_location(CFrame.new(548, 557, 848));
-	return;
-end);
-teleport_left_group:AddButton("CI Base", @native function()
-	teleport_to_location(CFrame.new(830, 500, 875));
-	return;
-end);
-teleport_left_group:AddButton("106 Chamber", @native function()
-	teleport_to_location(CFrame.new( 655.999939, -5.89998817, -374.19989, 1, 0, 0, 0, 1, 0, 0, 0, 1));
-	return;
-end);
-teleport_left_group:AddButton("Medical bay", @native function()
-	teleport_to_location(CFrame.new(830, 8.99999809, 182.000061, 1, 0, 0, 0, 1, 0, 0, 0, 1));
-	return;	
-end);
-teleport_left_group:AddButton("Cafe", @native function()
-	teleport_to_location(CFrame.new(583, 3.50000334, 210.000031, 1, 0, 0, 0, 1, 0, 0, 0, 1));
-	return;
-end);
+local teleport_locations: {[string]: CFrame} = {
+	["Tower"] =  CFrame.new(548, 557, 848);
+	["CI Base"] = CFrame.new(830, 500, 875);
+	["106 CC"] = CFrame.new(655.999939, -5.89998817, -374.19989, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+	["Medical bay"] = CFrame.new(830, 8.99999809, 182.000061, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+	["Cafe"] = CFrame.new(583, 3.50000334, 210.000031, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+	["SD bay"] = CFrame.new(431.999969, 9.5, 82.0000458, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+	["MTF spawn"] = CFrame.new(763.000183, 489.698029, 429.000183, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+	["MTF armory"] = CFrame.new(830.321289, 489.5, 419.206696, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+	["CDC"] = CFrame.new(1008, 16.5, -171, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+	["Control room"] = CFrame.new(375.999908, 24.4999962, 191.000031, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+	["Gate A"]  = CFrame.new(383.5, 7.5, 292.000031, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+	["Gate B"] = CFrame.new( 718, 8.5, 248.000031, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+	["Shelter 1"] = CFrame.new(529, 8.50000095, 78.1768188, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+	["Warhead"] = CFrame.new(623.999939, -17.4999905, -297.999847, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+	["Court room"] = CFrame.new(911.927917, 8.5, 150.66571, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+	["173 CC"] = CFrame.new(1016, 24.5, -66.9999847, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+	["SCD spawn"] = CFrame.new( 871.999939, 8.5, 199.999985, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+	["079 CC"] = CFrame.new(828.999939, 0.5, -254.499969, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+	["008 CC"] = CFrame.new(356.257416, 8.50000763, -335.106445, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+	
+}
+local players_tab = Tabs.Teleport:AddLeftGroupbox("Players");
 
-teleport_right_group:AddButton("SD bay", @native function()
-	teleport_to_location(CFrame.new(431.999969, 9.5, 82.0000458, 1, 0, 0, 0, 1, 0, 0, 0, 1 ));
-	return;
-end);
+local Containnment = Tabs.Teleport:AddLeftGroupbox("SCP Cells");
+local Bays = Tabs.Teleport:AddLeftGroupbox("Bays");
+
+local misc_left = Tabs.Teleport:AddLeftGroupbox("Uncategorized");
+local misc_right = Tabs.Teleport:AddRightGroupbox("Uncategorized");
+
+for i: string, v: CFrame in teleport_locations do
+	local group_side;
+	if i:find("CC") then
+		group_side = Containnment;
+	elseif i:find("bay") or i:find("spawn") then
+		group_side = Bays;
+	else
+		local random = math.random(1, 2);
+		group_side = random == 1 and misc_left or misc_right;
+	end;
+	group_side:AddButton(i, @native function()
+		teleport_to_location(v);
+		return;
+	end);
+end;
+
 
 --[[[
 main_left_group:AddDropdown("Items", {
@@ -151,7 +170,7 @@ local string_players = {};
 for i,v in Players:GetPlayers() do
 	string_players[i] = tostring(v);
 end;
-local thingy = teleport_right_group:AddDropdown("Players", {
+local thingy = players_tab:AddDropdown("Players", {
 	Values = string_players;
 	Default = "";
 	Muti = false;
@@ -201,7 +220,18 @@ helpful_left_group:AddToggle("Avoid mods", {
 });
 local scp_group: number = 3895837;
 local flashlight_spam = false;
+Players.PlayerRemoving:Connect(@native function(player: Player) 
+	table.clear(string_players);
+	for i,v in Players:GetPlayers() do
+		string_players[i] = tostring(v);
+	end;
+	return;
+end);
 Players.PlayerAdded:Connect(@native function(new_player: Player) 
+	table.clear(string_players);
+	for i,v in Players:GetPlayers() do
+		string_players[i] = tostring(v);
+	end;
 	if anti_mod and new_player:IsInGroup(scp_group) and new_player:GetRankInGroup(scp_group) > 8 then
 		local join_msg: string = "Moderator "..tostring(new_player).." joined";
 		if kick_activater then
@@ -243,17 +273,35 @@ end);
 
 
 local helpful_right_group = Tabs.Helpful:AddRightGroupbox("Util");
+helpful_right_group:AddToggle("Always show mouse", {
+	Text = "Always show mouse";
+	Default = false;
+	Tooltip = "";
+	Callback = @native function(enabled: boolean): ()
+		if not enabled then
+			restorefunction(getrawmetatable(game).__newindex);
+			return;
+		end;
+		local Mouse: Mouse = Player:GetMouse();
+		local hook; hook = hookmetamethod(game, "__newindex", newcclosure(function(...)
+			local self, index, value = ...;
+			if not checkcaller() and self == Mouse and index == "MouseIconEnabled" and type(value) == "boolean" then
+				return;
+			end;
+			hook(...);
+		end));
+		return;
+	end;	
+})
+
 helpful_right_group:AddButton("load IY", @native function(): ()
 	return loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))();
-end);
-helpful_right_group:AddButton("Teleport to CI base", @native function()
-	Player.Character:PivotTo(CFrame.new(832.751709, 498.395081, 878.6745, 1, 0, 0, 0, 0.488385886, 0.872627795, 0, -0.872627795, 0.488385886))
-	return;	
 end);
 helpful_right_group:AddButton("Activate tool", @native function(): ()
 	network:FireServer("setToolState", "Activate");
 	return;
 end);
+
 local main_left_group = Tabs.Main:AddLeftGroupbox("Main");
 main_left_group:AddButton("Bypass CLIENT AC", @native function(): ()
 	for _: unknown, v: any in getgc(false) do
@@ -263,6 +311,10 @@ main_left_group:AddButton("Bypass CLIENT AC", @native function(): ()
 			end));
 		end;
 	end;
+end);
+
+main_left_group:AddButton("Chat logs", @native function()
+	return loadstring(game:HttpGet("https://raw.githubusercontent.com/sleepyBIOS/scripts/refs/heads/main/site19chatlogs.lua"))();
 end);
 
 main_left_group:AddButton("Remote Spy", @native function()
@@ -282,9 +334,7 @@ main_left_group:AddButton("Remote Spy", @native function()
 	end));
 end);
 
-main_left_group:AddButton("Chat logs", @native function()
-	return loadstring(game:HttpGet("https://raw.githubusercontent.com/sleepyBIOS/scripts/refs/heads/main/site19chatlogs.lua"))();
-end);
+
 
 main_left_group:AddButton("Bypass fly detections", @native function(): ()
 	RunService.PreRender:Connect(@native function()
@@ -296,7 +346,6 @@ main_left_group:AddButton("Bypass fly detections", @native function(): ()
 		Player.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding, false);
 	end);
 end);
-
 
 local toggle_infinite_ammo; toggle_infinite_ammo = @native function(enabled: boolean)
 	local LUA_GC = getgc(true);
