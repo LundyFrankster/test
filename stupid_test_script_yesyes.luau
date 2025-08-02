@@ -123,11 +123,10 @@ local teleport_locations: {[string]: CFrame} = {
 	["Court room"] = CFrame.new(911.927917, 8.5, 150.66571, 1, 0, 0, 0, 1, 0, 0, 0, 1);
 	["173 CC"] = CFrame.new(1016, 24.5, -66.9999847, 1, 0, 0, 0, 1, 0, 0, 0, 1);
 	["SCD spawn"] = CFrame.new( 871.999939, 8.5, 199.999985, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+	["914 CC"] = CFrame.new(768, 8, -146);
 	["079 CC"] = CFrame.new(828.999939, 0.5, -254.499969, 1, 0, 0, 0, 1, 0, 0, 0, 1);
 	["008 CC"] = CFrame.new(356.257416, 8.50000763, -335.106445, 1, 0, 0, 0, 1, 0, 0, 0, 1);
-	["914 CC"] = CFrame.new(768, 8, -144);
-	["049 CC"] = CFrame.new(528, -40, -271);
-	["682 CC"] = CFrame.new(426, 537, 783);
+	
 }
 local players_tab = Tabs.Teleport:AddLeftGroupbox("Players");
 
@@ -349,6 +348,7 @@ main_left_group:AddButton("Bypass fly detections", @native function(): ()
 	end);
 end);
 
+
 local toggle_infinite_ammo; toggle_infinite_ammo = @native function(enabled: boolean)
 	local LUA_GC = getgc(true);
 	local Network;
@@ -473,7 +473,7 @@ main_right_group:AddToggle("Disable spread", {
 				local func = rawget(v, "Update");
 				if toggle then
 					hookfunction(func, newlclosure(function(self)
-                            rawset(self, "_spray", {0, 0, 0});
+						rawset(self, "_spray", {0, 0, 0});
 					end));
 				else
 					restorefunction(func)
@@ -562,8 +562,8 @@ main_left_group:AddToggle("Full bright",{
 		end;
 		return;
 	end,
-	
-	
+
+
 });
 main_left_group:AddToggle("Minimap spy", {
 	Text = "Minimap spy";
@@ -690,5 +690,4 @@ Player.CharacterAdded:Connect(function()
 	wait(1);
 	toggle_run();
 	return;
-
 end);
