@@ -138,8 +138,8 @@ local players_tab = Tabs.Teleport:AddLeftGroupbox("Players");
 local Containnment = Tabs.Teleport:AddLeftGroupbox("SCP Cells");
 local Bays = Tabs.Teleport:AddLeftGroupbox("Bays");
 
-local misc_left = Tabs.Teleport:AddLeftGroupbox("Uncategorized");
-local misc_right = Tabs.Teleport:AddRightGroupbox("Uncategorized");
+local misc_left = Tabs.Teleport:AddLeftGroupbox("Uncategorized1");
+local misc_right = Tabs.Teleport:AddRightGroupbox("Uncategorized2");
 
 for i: string, v: CFrame in teleport_locations do
 	local group_side;
@@ -149,7 +149,7 @@ for i: string, v: CFrame in teleport_locations do
 		group_side = Bays;
 	else
 		local random = math.random(1, 2);
-		group_side = random == 1 and misc_left or misc_right;
+		group_side = random == 1 and misc_left;
 	end;
 	group_side:AddButton(i, @native function()
 		teleport_to_location(v);
