@@ -127,7 +127,7 @@ local teleport_locations: {[string]: CFrame} = {
 	["008 CC"] = CFrame.new(356.257416, 8.50000763, -335.106445, 1, 0, 0, 0, 1, 0, 0, 0, 1);
 	["914 CC"] = CFrame.new(768, 8, -144);
 	["049 CC"] = CFrame.new(528, -40, -271);
-	["Gate A Outside"] = CFrame.new(426, 537, 783);
+	["682 CC"] = CFrame.new(426, 537, 783);
 }
 local players_tab = Tabs.Teleport:AddLeftGroupbox("Players");
 
